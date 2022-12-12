@@ -1,7 +1,7 @@
 {
-    "name": "stanley-the-template-typescript",
-    "version": "0.0.0",
-    "description": "Stanley TheTemplate for typescript project",
+    "name": "@odg/exception",
+    "version": "0.0.1",
+    "description": "Exception Class with preview for Js",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "homepage": "",
