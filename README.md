@@ -93,6 +93,18 @@ try {
 }
 ```
 
+Props
+
+```typescript
+interface Exception {
+    message: string; // Message of exception
+    code?: string | number; // Code of exception
+    stack: string; // Stack of Exception
+    preview?: UnknownException; // Preview exception parsed to UnknownException class
+    original?: unknown // Original Preview Exception (Error, Exception, string, unknown)
+}
+```
+
 ### 📍 Start Project
 
 First install dependencies with the following command
