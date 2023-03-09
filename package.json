@@ -4,10 +4,13 @@
     "description": "Exception Class with preview for Js",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
-    "homepage": "",
+    "homepage": "https://github.com/ODGodinho/ODGException",
     "repository": {
         "type": "git",
-        "url": ""
+        "url": "https://github.com/ODGodinho/ODGException"
+    },
+    "bugs": {
+        "url": "https://github.com/ODGodinho/ODGException/issues"
     },
     "scripts": {
         "build": "rimraf build && tsc --project ./tsconfig.build.json",
