@@ -22,6 +22,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/ODGodinho/ODGException)](https://github.com/ODGodinho/ODGException/commits/master)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen)](https://opensource.org/licenses/MIT)
 [![StyleCI](https://github.styleci.io/repos/577124284/shield?branch=main)](https://github.styleci.io/repos/577124284?branch=main)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FODGodinho%2FODGException.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FODGodinho%2FODGException?ref=badge_shield)
 
 </p>
 
@@ -134,3 +135,7 @@ yarn test
 # or
 yarn test:watch
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FODGodinho%2FODGException.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FODGodinho%2FODGException?ref=badge_large)
