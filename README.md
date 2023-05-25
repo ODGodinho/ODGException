@@ -136,6 +136,5 @@ yarn test
 yarn test:watch
 ```
 
-
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FODGodinho%2FODGException.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FODGodinho%2FODGException?ref=badge_large)
