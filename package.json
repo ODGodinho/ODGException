@@ -59,7 +59,7 @@
         "@odg/eslint-config": "*",
         "@odg/tsconfig": "*",
         "@types/jest": "^29.4.0",
-        "@types/node": "^18",
+        "@types/node": "^20",
         "eslint": "*",
         "jest": "^29.5.0",
         "rimraf": "^5.0.1",
