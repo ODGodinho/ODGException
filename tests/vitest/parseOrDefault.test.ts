@@ -1,4 +1,4 @@
-import { UnknownException } from "../../src";
+import { UnknownException } from "~";
 
 describe("Test Default Exception", () => {
     test("Test UnknownException", async () => {

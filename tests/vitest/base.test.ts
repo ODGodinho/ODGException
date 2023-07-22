@@ -1,4 +1,4 @@
-import { Exception, UnknownException } from "../../src/index";
+import { Exception, UnknownException } from "~";
 
 describe("Exception Tests", () => {
     test("Instance exception Teste", () => {

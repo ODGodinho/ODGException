@@ -1,5 +1,10 @@
 import { UnknownException } from "..";
 
+type ParseObjectType = Record<number | string | symbol, unknown>;
+
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type, @typescript-eslint/no-magic-numbers
+type EmptyType = "" | 0 | false | null | undefined | void;
+
 export class Exception extends Error {
 
     [Error: string]: unknown;
@@ -21,26 +26,34 @@ export class Exception extends Error {
     ) {
         super(message);
         this.name = this.constructor.name;
-        this.preview = Exception.parse(preview);
+        this.preview = UnknownException.parse(preview);
         Error.apply(this, [ message ]);
     }
+
+    public static parse<T extends ParseObjectType>(exception?: T): (Exception & T);
+
+    public static parse<T extends EmptyType>(exception?: T | undefined): undefined;
+
+    public static parse<T>(exception?: T | undefined): Exception | undefined;
 
     /**
      * Parse error to Exception
      *
-     * @param {Error | Exception | unknown} exception Possible exception
-     * @returns {Exception | undefined}
-     * @memberof Exception
+     * @template {any} T Type of exception
+     * @param {T | undefined} exception Possible exception
+     * @returns {Exception | (Exception & T) | undefined}
      */
-    public static parse(exception?: unknown): Exception | undefined {
-        if (!exception) return undefined;
+    public static parse<T>(exception?: T): Exception | (Exception & T) | undefined {
+        if (!exception) return;
 
         if (exception instanceof Exception) return exception;
 
-        let newException: Exception;
-        if (typeof exception === "object") newException = this.parseObject(exception as Record<string, unknown>);
+        let newException: Exception | Exception & T | undefined;
+        if (typeof exception === "object") newException = this.parseObject(
+            exception as Record<string, unknown>,
+        );
 
-        newException ||= new UnknownException(Exception.messageToString(exception));
+        newException ||= new this(Exception.messageToString(exception));
         newException.original = exception;
 
         return newException;
@@ -50,7 +63,7 @@ export class Exception extends Error {
      * If Possible exception has prop with code return it
      *
      * @memberof Exception
-     * @param {Exception | Error | unknown} exception Possible Exception
+     * @param {unknown} exception Possible Exception
      * @returns {number | string | undefined}
      */
     private static getIfHasCode(exception: unknown): number | string | undefined {
@@ -78,9 +91,8 @@ export class Exception extends Error {
         return JSON.stringify(message);
     }
 
-    private static parseObject(exception: Record<string, unknown>): Exception {
+    private static parseObject<T extends Record<string, unknown>>(exception: T): Exception & T {
         const newException = new UnknownException("");
-        newException.original = exception;
 
         for (const key in exception) {
             if (Object.prototype.hasOwnProperty.call(exception, key)) {
@@ -95,7 +107,7 @@ export class Exception extends Error {
         newException.stack = "stack" in exception ? Exception.messageToString(exception.stack) : undefined;
         newException.original = exception;
 
-        return newException;
+        return newException as Exception & T;
     }
 
 }
