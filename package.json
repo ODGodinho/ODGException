@@ -57,14 +57,14 @@
     "devDependencies": {
         "@odg/eslint-config": "*",
         "@odg/tsconfig": "*",
-        "@types/node": "^18",
-        "@vitest/coverage-v8": "^0.33.0",
-        "concurrently": "^8.2.0",
+        "@types/node": ">=18",
+        "@vitest/coverage-v8": "*",
+        "concurrently": "^8.2.1",
         "eslint": "*",
         "rimraf": "*",
         "tsc-alias": "^1.8.7",
-        "typescript": "^5.1.6",
-        "vite-tsconfig-paths": "^4.2.0",
-        "vitest": "^0.33.0"
+        "typescript": "^5.2.2",
+        "vite-tsconfig-paths": "*",
+        "vitest": "^0.34.4"
     }
 }
