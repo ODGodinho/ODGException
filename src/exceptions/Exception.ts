@@ -5,9 +5,13 @@ type ParseObjectType = Record<number | string | symbol, unknown>;
 // eslint-disable-next-line @typescript-eslint/no-invalid-void-type, @typescript-eslint/no-magic-numbers
 type EmptyType = "" | 0 | false | null | undefined | void;
 
+export type ParserException = (newException: Exception, original: unknown) => Exception;
+
 export class Exception extends Error {
 
     [Error: string]: unknown;
+
+    public static readonly $parsers = new Set<ParserException>();
 
     public readonly preview?: Exception;
 
@@ -55,6 +59,10 @@ export class Exception extends Error {
 
         newException ||= new this(Exception.messageToString(exception));
         newException.original = exception;
+
+        for (const callback of this.$parsers) {
+            newException = callback(newException, exception);
+        }
 
         return newException;
     }
