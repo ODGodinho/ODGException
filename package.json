@@ -58,13 +58,12 @@
         "@odg/eslint-config": "*",
         "@odg/tsconfig": "*",
         "@types/node": ">=18",
-        "@vitest/coverage-v8": "*",
-        "concurrently": "^8.2.1",
-        "eslint": "*",
+        "@vitest/coverage-v8": "^1",
+        "concurrently": "^9.0.1",
         "rimraf": "*",
-        "tsc-alias": "^1.8.8",
-        "typescript": "^5.2.2",
-        "vite-tsconfig-paths": "*",
-        "vitest": "^0.34.6"
+        "tsc-alias": "^1.8.10",
+        "typescript": "^5.6.2",
+        "vite-tsconfig-paths": "^4",
+        "vitest": "^1"
     }
 }
