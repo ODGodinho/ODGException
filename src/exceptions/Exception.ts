@@ -1,4 +1,4 @@
-import { UnknownException } from "..";
+import { AbortException, UnknownException } from "..";
 
 type ParseObjectType = Record<number | string | symbol, unknown>;
 
@@ -57,7 +57,7 @@ export class Exception extends Error {
             exception as Record<string, unknown>,
         );
 
-        newException ||= new this(Exception.messageToString(exception));
+        newException ||= new(this.getExceptionClass(exception))(Exception.messageToString(exception));
         newException.original = exception;
 
         for (const callback of this.$parsers) {
@@ -76,7 +76,7 @@ export class Exception extends Error {
      * @returns {Exception | UnknownException}
      */
     public static parseOrDefault(exception: unknown, message: string): Exception | UnknownException {
-        return this.parse(exception) ?? new this(message, exception);
+        return this.parse(exception) ?? new UnknownException(message, exception);
     }
 
     /**
@@ -112,7 +112,7 @@ export class Exception extends Error {
     }
 
     private static parseObject<T extends Record<string, unknown>>(exception: T): Exception & T {
-        const newException = new UnknownException("");
+        const newException = new(this.getExceptionClass(exception))("");
 
         for (const key in exception) {
             if (Object.prototype.hasOwnProperty.call(exception, key)) {
@@ -128,6 +128,17 @@ export class Exception extends Error {
         newException.original = exception;
 
         return newException as Exception & T;
+    }
+
+    private static getExceptionClass(exception: unknown): typeof Exception {
+        if (
+            exception
+            && typeof exception === "object"
+            && "name" in exception
+            && exception.name === "AbortError"
+        ) return AbortException;
+
+        return UnknownException;
     }
 
 }

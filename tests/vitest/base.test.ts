@@ -1,4 +1,4 @@
-import { Exception, UnknownException } from "~";
+import { AbortException, Exception, UnknownException } from "~";
 
 describe("Exception Tests", () => {
     test("Instance exception Teste", () => {
@@ -98,5 +98,16 @@ describe("Exception Tests", () => {
         expect(exception).toBeInstanceOf(UnknownException);
         expect(exception).toBeInstanceOf(Exception);
         expect(exception.preview?.original).toStrictEqual(base1);
+    });
+
+    test("Teste AbortException", () => {
+        try {
+            AbortSignal.abort().throwIfAborted();
+        } catch (error) {
+            const exception = Exception.parse(error);
+            expect(exception).toBeInstanceOf(AbortException);
+            expect(exception).toBeInstanceOf(Exception);
+            expect(exception?.original).toStrictEqual(error);
+        }
     });
 });
