@@ -9,7 +9,7 @@ describe("Teste Parse", () => {
             test() {
                 return "ok";
             },
-        })!;
+        });
 
         expect(exception).toHaveProperty("test");
         expect(exception.test()).toBe("ok");
