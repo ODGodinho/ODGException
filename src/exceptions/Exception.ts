@@ -57,7 +57,7 @@ export class Exception extends Error {
             exception as Record<string, unknown>,
         );
 
-        newException ||= new(this.getExceptionClass(exception))(Exception.messageToString(exception));
+        newException ??= new(this.getExceptionClass(exception))(Exception.messageToString(exception));
         newException.original = exception;
 
         for (const callback of this.$parsers) {
