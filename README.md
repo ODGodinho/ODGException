@@ -94,6 +94,19 @@ try {
 }
 ```
 
+make Exception
+
+```typescript
+try {
+    // code
+} catch (error) {
+    throw Exception.parse({
+        anythingStatus: "FAILED",
+        anything2: "anything"
+    });
+}
+```
+
 Props
 
 ```typescript
@@ -101,8 +114,8 @@ interface Exception {
     message: string; // Message of exception
     code?: string | number; // Code of exception
     stack: string; // Stack of Exception
-    preview?: UnknownException; // Preview exception parsed to UnknownException class
     original?: unknown // Original Preview Exception (Error, Exception, string, unknown)
+    getPrevious(): Exception | undefined; // Preview exception parsed to UnknownException class
 }
 ```
 

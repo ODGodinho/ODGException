@@ -7,20 +7,20 @@ describe("Exception Tests", () => {
 
         expect(exception.message).toEqual(message1);
         expect(exception).toBeInstanceOf(Exception);
-        expect(exception.preview).toBeUndefined();
+        expect(exception.getPrevious()).toBeUndefined();
     });
 
     test("Teste Exception base Error", () => {
         const message1 = "message1";
         const base1 = "base1";
-        const previewException = new Error(base1);
-        const exception = new Exception(message1, previewException);
+        const previousException = new Error(base1);
+        const exception = new Exception(message1, previousException);
 
         expect(exception.message).toStrictEqual(message1);
         expect(exception).toBeInstanceOf(Exception);
-        expect(exception.preview).toBeInstanceOf(UnknownException);
-        expect(exception.preview?.message).toStrictEqual(base1);
-        expect(exception.preview?.stack).toStrictEqual(previewException.stack);
+        expect(exception.getPrevious()).toBeInstanceOf(UnknownException);
+        expect(exception.getPrevious()?.message).toStrictEqual(base1);
+        expect(exception.getPrevious()?.stack).toStrictEqual(previousException.stack);
     });
 
     test("Teste Exception base string", () => {
@@ -30,57 +30,57 @@ describe("Exception Tests", () => {
 
         expect(exception.message).toStrictEqual(message1);
         expect(exception).toBeInstanceOf(Exception);
-        expect(exception.preview).toBeInstanceOf(UnknownException);
-        expect(exception.preview?.message).toStrictEqual(base1);
+        expect(exception.getPrevious()).toBeInstanceOf(UnknownException);
+        expect(exception.getPrevious()?.message).toStrictEqual(base1);
     });
 
     test("Teste Exception base with code", () => {
         const message1 = "message1";
-        const preview = {
+        const previous = {
             code: 123,
         };
-        const exception = new Exception(message1, preview);
+        const exception = new Exception(message1, previous);
 
         expect(exception.message).toStrictEqual(message1);
         expect(exception).toBeInstanceOf(Exception);
-        expect(exception.preview).toBeInstanceOf(UnknownException);
-        expect(exception.preview?.message).toStrictEqual("{\"code\":123}");
-        expect(exception.preview?.code).toStrictEqual(123);
+        expect(exception.getPrevious()).toBeInstanceOf(UnknownException);
+        expect(exception.getPrevious()?.message).toStrictEqual("{\"code\":123}");
+        expect(exception.getPrevious()?.code).toStrictEqual(123);
     });
 
     test("Teste Exception base with invalid code", () => {
         const message1 = "message1";
-        const messagePreview = "messagePreview";
-        const preview = {
-            message: messagePreview,
+        const messagePrevious = "messagePrevious";
+        const previous = {
+            message: messagePrevious,
             code: Symbol(123),
             extraProp: "extraProp",
         };
-        const exception = new Exception(message1, preview);
+        const exception = new Exception(message1, previous);
 
         expect(exception.message).toStrictEqual(message1);
         expect(exception).toBeInstanceOf(Exception);
-        expect(exception.preview).toBeInstanceOf(UnknownException);
-        expect(exception.preview?.message).toStrictEqual(messagePreview);
-        expect(exception.preview?.code).toBeUndefined();
-        expect(exception.preview?.extraProp).toStrictEqual("extraProp");
-        expect(exception.preview?.original).toStrictEqual(preview);
+        expect(exception.getPrevious()).toBeInstanceOf(UnknownException);
+        expect(exception.getPrevious()?.message).toStrictEqual(messagePrevious);
+        expect(exception.getPrevious()?.code).toBeUndefined();
+        expect(exception.getPrevious()?.extraProp).toStrictEqual("extraProp");
+        expect(exception.getPrevious()?.original).toStrictEqual(previous);
     });
 
-    test("Teste Exception preview is Exception", () => {
+    test("Teste Exception previous is Exception", () => {
         const message1 = "message1";
-        const messagePreview = "messagePreview";
-        const previewException = new Exception(messagePreview);
-        const exception = new Exception(message1, previewException);
+        const messagePrevious = "messagePrevious";
+        const previousException = new Exception(messagePrevious);
+        const exception = new Exception(message1, previousException);
 
         expect(exception.message).toStrictEqual(message1);
         expect(exception).toBeInstanceOf(Exception);
-        expect(exception.preview).toBeInstanceOf(Exception);
-        expect(exception.preview).not.toBeInstanceOf(UnknownException);
-        expect(exception.preview === previewException).toBeTruthy();
-        expect(exception.preview?.message).toStrictEqual(messagePreview);
-        expect(exception.preview?.code).toBeUndefined();
-        expect(exception.preview?.original).toBeUndefined();
+        expect(exception.getPrevious()).toBeInstanceOf(Exception);
+        expect(exception.getPrevious()).not.toBeInstanceOf(UnknownException);
+        expect(exception.getPrevious() === previousException).toBeTruthy();
+        expect(exception.getPrevious()?.message).toStrictEqual(messagePrevious);
+        expect(exception.getPrevious()?.code).toBeUndefined();
+        expect(exception.getPrevious()?.original).toBeUndefined();
     });
 
     test("Test getIfHasCode Not Has Code", () => {
@@ -97,7 +97,7 @@ describe("Exception Tests", () => {
 
         expect(exception).toBeInstanceOf(UnknownException);
         expect(exception).toBeInstanceOf(Exception);
-        expect(exception.preview?.original).toStrictEqual(base1);
+        expect(exception.getPrevious()?.original).toStrictEqual(base1);
     });
 
     test("Teste AbortException", () => {

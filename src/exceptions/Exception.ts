@@ -13,6 +13,7 @@ export class Exception extends Error {
 
     public static readonly $parsers = new Set<ParserException>();
 
+    /** @deprecated Use getPrevious() */
     public readonly preview?: Exception;
 
     /**
@@ -23,14 +24,17 @@ export class Exception extends Error {
      */
     public original?: unknown;
 
+    protected readonly $previous?: Exception;
+
     public constructor(
         public message: string,
-        preview?: unknown,
+        previous?: unknown,
         public code?: number | string,
     ) {
         super(message);
         this.name = this.constructor.name;
-        this.preview = UnknownException.parse(preview);
+        this.$previous = UnknownException.parse(previous);
+        this.preview = this.$previous;
         Error.apply(this, [ message ]);
     }
 
@@ -77,6 +81,18 @@ export class Exception extends Error {
      */
     public static parseOrDefault(exception: unknown, message: string): Exception | UnknownException {
         return this.parse(exception) ?? new UnknownException(message, exception);
+    }
+
+    /**
+     * Returns the previous exception, if available.
+     *
+     * This method is useful for exception chaining,
+     * allowing you to trace back to the original exception that caused the current one.
+     *
+     * @returns {Exception | undefined}
+     */
+    public getPrevious(): Exception | undefined {
+        return this.$previous;
     }
 
     /**
