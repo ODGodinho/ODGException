@@ -2,7 +2,7 @@ import { AbortException, UnknownException } from "..";
 
 type ParseObjectType = Record<number | string | symbol, unknown>;
 
-// eslint-disable-next-line @typescript-eslint/no-invalid-void-type, @typescript-eslint/no-magic-numbers
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 type EmptyType = "" | 0 | false | null | undefined | void;
 
 export type ParserException = (newException: Exception, original: unknown) => Exception;
@@ -12,9 +12,6 @@ export class Exception extends Error {
     [Error: string]: unknown;
 
     public static readonly $parsers = new Set<ParserException>();
-
-    /** @deprecated Use getPrevious() */
-    public readonly preview?: Exception;
 
     /**
      * Content original exception
@@ -34,34 +31,34 @@ export class Exception extends Error {
         super(message);
         this.name = this.constructor.name;
         this.$previous = UnknownException.parse(previous);
-        this.preview = this.$previous;
-        Error.apply(this, [ message ]);
+        Reflect.apply(Error, this, [ message ]);
     }
 
-    public static parse<T extends ParseObjectType>(exception?: T): (Exception & T);
+    public static parse<T extends ParseObjectType>(exception?: T): Exception & T;
 
-    public static parse<T extends EmptyType>(exception?: T | undefined): undefined;
+    public static parse(exception?: EmptyType): undefined;
 
-    public static parse<T>(exception?: T | undefined): Exception | undefined;
+    public static parse(exception?: unknown): Exception | undefined;
 
     /**
      * Parse error to Exception
      *
      * @template {any} T Type of exception
      * @param {T | undefined} exception Possible exception
-     * @returns {Exception | (Exception & T) | undefined}
+     * @returns {Exception | Exception & T | undefined}
      */
-    public static parse<T>(exception?: T): Exception | (Exception & T) | undefined {
+    public static parse<T>(exception?: T): Exception | Exception & T | undefined {
         if (!exception) return;
 
         if (exception instanceof Exception) return exception;
 
         let newException: Exception | Exception & T | undefined;
+
         if (typeof exception === "object") newException = this.parseObject(
             exception as Record<string, unknown>,
         );
 
-        newException ??= new(this.getExceptionClass(exception))(Exception.messageToString(exception));
+        newException ??= new (this.getExceptionClass(exception))(Exception.messageToString(exception));
         newException.original = exception;
 
         for (const callback of this.$parsers) {
@@ -76,23 +73,11 @@ export class Exception extends Error {
      *
      * @memberof Exception
      * @param {unknown} exception Possible exception
-     * @param {string} message Message Default Exception
+     * @param {string} message Message if exception is empty
      * @returns {Exception | UnknownException}
      */
     public static parseOrDefault(exception: unknown, message: string): Exception | UnknownException {
         return this.parse(exception) ?? new UnknownException(message, exception);
-    }
-
-    /**
-     * Returns the previous exception, if available.
-     *
-     * This method is useful for exception chaining,
-     * allowing you to trace back to the original exception that caused the current one.
-     *
-     * @returns {Exception | undefined}
-     */
-    public getPrevious(): Exception | undefined {
-        return this.$previous;
     }
 
     /**
@@ -118,7 +103,7 @@ export class Exception extends Error {
      * Convert error message to string
      *
      * @memberof Exception
-     * @param {unknown} message Message of exception
+     * @param {unknown} message Exception message to convert
      * @returns {string}
      */
     private static messageToString(message: unknown): string {
@@ -128,7 +113,7 @@ export class Exception extends Error {
     }
 
     private static parseObject<T extends Record<string, unknown>>(exception: T): Exception & T {
-        const newException = new(this.getExceptionClass(exception))("");
+        const newException = new (this.getExceptionClass(exception))("");
 
         for (const key in exception) {
             if (Object.prototype.hasOwnProperty.call(exception, key)) {
@@ -155,6 +140,18 @@ export class Exception extends Error {
         ) return AbortException;
 
         return UnknownException;
+    }
+
+    /**
+     * Returns the previous exception, if available.
+     *
+     * This method is useful for exception chaining,
+     * allowing you to trace back to the original exception that caused the current one.
+     *
+     * @returns {Exception | undefined}
+     */
+    public getPrevious(): Exception | undefined {
+        return this.$previous;
     }
 
 }

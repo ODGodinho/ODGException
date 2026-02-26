@@ -1,4 +1,9 @@
-import { AbortException, Exception, UnknownException } from "~";
+import {
+    AbortException,
+    Exception,
+    InvalidArgumentException,
+    UnknownException,
+} from "~";
 
 describe("Exception Tests", () => {
     test("Instance exception Teste", () => {
@@ -13,6 +18,7 @@ describe("Exception Tests", () => {
     test("Teste Exception base Error", () => {
         const message1 = "message1";
         const base1 = "base1";
+        // eslint-disable-next-line no-restricted-syntax
         const previousException = new Error(base1);
         const exception = new Exception(message1, previousException);
 
@@ -105,9 +111,19 @@ describe("Exception Tests", () => {
             AbortSignal.abort().throwIfAborted();
         } catch (error) {
             const exception = Exception.parse(error);
+
             expect(exception).toBeInstanceOf(AbortException);
             expect(exception).toBeInstanceOf(Exception);
             expect(exception?.original).toStrictEqual(error);
         }
+    });
+
+    test.each([
+        Exception,
+        UnknownException,
+        AbortException,
+        InvalidArgumentException,
+    ])("Instance All", (MyException) => {
+        expect(new MyException("test")).toBeInstanceOf(MyException);
     });
 });

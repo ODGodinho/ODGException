@@ -16,8 +16,8 @@
         "build": "rimraf dist/ && tsc --project ./tsconfig.build.json && tsc-alias -p tsconfig.build.json",
         "build:watch": "npm run build && (concurrently \"tsc --project ./tsconfig.build.json -w\" \"tsc-alias -p tsconfig.build.json -w\")",
         "start": "node ./dist/index.ts",
-        "lint": "eslint --ext .js,.jsx,.ts,.tsx,.json,.jsonc,.json5,.yml,.yaml,.xml,.txt,.svg,.properties,.gradle,.java,.cpp,.c,.cs,.html,.css,.groovy,.gitignore,.npmignore,.toml,.env,.example,.sample,.ini,.php,.bat,.powershell,.ps1,.sh,.bash,.eslintrc",
-        "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx,.json,.jsonc,.json5,.yml,.yaml,.xml,.txt,.svg,.properties,.gradle,.java,.cpp,.c,.cs,.html,.css,.groovy,.gitignore,.npmignore,.toml,.env,.example,.sample,.ini,.php,.bat,.powershell,.ps1,.sh,.bash,.eslintrc --fix",
+        "lint": "eslint",
+        "lint:fix": "eslint --fix",
         "test": "vitest run",
         "test:ci": "vitest run --passWithNoTests",
         "test:watch": "vitest --watch"
@@ -55,15 +55,15 @@
     "author": "Dragons Gamers <https://www.linkedin.com/in/victor-alves-odgodinho>",
     "license": "MIT",
     "devDependencies": {
-        "@odg/eslint-config": "*",
+        "@odg/eslint-config": "^3",
         "@odg/tsconfig": "*",
-        "@types/node": ">=20",
-        "@vitest/coverage-v8": "^1",
-        "concurrently": "^9.0.1",
+        "@types/node": ">=24",
+        "@vitest/coverage-v8": "^4.0.18",
+        "concurrently": "^9.2.1",
         "rimraf": "*",
-        "tsc-alias": "^1.8.11",
-        "typescript": "^5.8.2",
-        "vite-tsconfig-paths": "^4",
-        "vitest": "^1"
+        "tsc-alias": "^1.8.16",
+        "typescript": "^5.9.3",
+        "vite-tsconfig-paths": "^6.1.1",
+        "vitest": "^4.0.18"
     }
 }
