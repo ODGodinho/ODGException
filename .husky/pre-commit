@@ -1,0 +1,4 @@
+yarn tsc --noEmit
+npx lint-staged
+npm run build
+npm run test:ci

@@ -18,12 +18,16 @@
         "start": "node ./dist/index.ts",
         "lint": "eslint",
         "lint:fix": "eslint --fix",
+        "prepare": "husky",
         "test": "vitest run",
         "test:ci": "vitest run --passWithNoTests",
         "test:watch": "vitest --watch"
     },
     "publishConfig": {
         "access": "public"
+    },
+    "lint-staged": {
+        "*": [ "npm run lint:fix" ]
     },
     "release": {
         "branches": [
@@ -60,6 +64,8 @@
         "@types/node": ">=24",
         "@vitest/coverage-v8": "^4.0.18",
         "concurrently": "^9.2.1",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.7",
         "rimraf": "*",
         "tsc-alias": "^1.8.16",
         "typescript": "^5.9.3",
